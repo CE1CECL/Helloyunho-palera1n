@@ -40,7 +40,7 @@ jobs:
             gnu_triple: aarch64-apple-darwin
             os: iphoneos
             minos: 7.0
-    runs-on: macos-12
+    runs-on: macos-latest
     env:
       MBEDTLS_VERSION: 3.4.0
       READLINE_VERSION: 8.2
@@ -355,7 +355,20 @@ jobs:
           sudo apt-get install -y pkg-config autoconf automake autopoint mandoc
           sudo pip3 install jsonschema jinja2
 
+      - name: Download toolchain checksum
+        run: |
+          curl -LO https://musl.cc/SHA512SUMS
+          echo "TOOLCHAIN_CHECKSUM="$(grep ${{ matrix.triple }}-cross.tgz SHA512SUMS | cut -d' ' -f1) >> $GITHUB_ENV
+
+      - name: Download toolchain (cached)
+        id: toolchain_cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ matrix.triple }}-cross.tgz
+          key: ${{ matrix.triple }}-${{ env.TOOLCHAIN_CHECKSUM }}-toolchain
+
       - name: Download toolchain
+        if: steps.toolchain_cache.outputs.cache-hit != 'true'
         run: |
           curl -LO https://musl.cc/${{ matrix.triple }}-cross.tgz
 
