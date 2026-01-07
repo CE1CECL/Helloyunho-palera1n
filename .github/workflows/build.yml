@@ -50,7 +50,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -299,10 +299,10 @@ jobs:
 
       - name: Get branch name
         id: branch-name
-        uses: tj-actions/branch-names@v7
+        uses: tj-actions/branch-names@v9
 
       - name: Upload Latest Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: iso
           path: |
@@ -311,7 +311,7 @@ jobs:
 
       - name: Upload ${{ matrix.os }} thin ${{ matrix.arch }} build
         if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: palera1n-${{ matrix.os }}-${{ matrix.arch }}
           path: palera1n-${{ matrix.os }}-${{ matrix.arch }}
@@ -319,7 +319,7 @@ jobs:
 
       - name: Upload ${{ matrix.os }} thin ${{ matrix.arch }} debug symbols
         if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: palera1n-${{ matrix.os }}-${{ matrix.arch }}.dSYM
           path: palera1n-${{ matrix.os }}-${{ matrix.arch }}.dSYM
@@ -345,7 +345,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -362,7 +362,7 @@ jobs:
 
       - name: Download toolchain (cached)
         id: toolchain_cache
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ${{ matrix.triple }}-cross.tgz
           key: ${{ matrix.triple }}-${{ env.TOOLCHAIN_CHECKSUM }}-toolchain
@@ -602,10 +602,10 @@ jobs:
 
       - name: Get branch name
         id: branch-name
-        uses: tj-actions/branch-names@v7
+        uses: tj-actions/branch-names@v9
 
       - name: Upload Latest Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: iso
           path: |
